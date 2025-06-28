@@ -46,14 +46,16 @@ class DeviceCreate(BaseModel):
     device_type_id: int
     user_id: int
     room_location: Optional[str] = None
-    power_consumption: Optional[float] = 0.0
+    actual_power_consumption: Optional[float] = 0.0
 
 class DeviceUpdate(BaseModel):
     device_name: Optional[str] = None
     room_location: Optional[str] = None
     status: Optional[bool] = None
-    power_consumption: Optional[float] = None
+    actual_power_consumption: Optional[float] = None
     last_maintenance: Optional[datetime] = None
+    brand: Optional[str] = None
+    model: Optional[str] = None
 
 class DeviceResponse(BaseModel):
     device_id: int
@@ -62,9 +64,11 @@ class DeviceResponse(BaseModel):
     user_id: int
     room_location: Optional[str]
     status: bool
-    power_consumption: float
+    actual_power_consumption: float
     installation_date: datetime
     last_maintenance: Optional[datetime]
+    brand: Optional[str] = None
+    model: Optional[str] = None
 
     class Config:
         from_attributes = True

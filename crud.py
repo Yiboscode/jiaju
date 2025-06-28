@@ -133,15 +133,13 @@ def delete_device(db: Session, device_id: int):
 # 使用记录CRUD操作
 def create_usage_record(db: Session, usage_record: models.UsageRecordCreate):
     db_record = database.UsageRecord(**usage_record.dict())
-    # 如果有结束时间，计算持续时间和能耗
     if db_record.end_time and db_record.start_time:
         duration = db_record.end_time - db_record.start_time
         db_record.duration_minutes = int(duration.total_seconds() / 60)
-        # 获取设备功耗信息计算能耗
         device = get_device(db, db_record.device_id)
         if device:
             hours = duration.total_seconds() / 3600
-            db_record.energy_consumed = device.power_consumption * hours / 1000  # 转换为度
+            db_record.energy_consumed = device.actual_power_consumption * hours / 1000  # 转换为度
     
     db.add(db_record)
     db.commit()

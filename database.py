@@ -30,8 +30,10 @@ class DeviceType(Base):
     __tablename__ = 'device_types'
     
     type_id = Column(Integer, primary_key=True, autoincrement=True)
-    type_name = Column(String(50), unique=True, nullable=False)  # 如：灯具、空调、摄像头等
+    type_name = Column(String(50), unique=True, nullable=False)
     description = Column(Text)
+    avg_power_consumption = Column(Float)
+    avg_daily_usage_hours = Column(Float)
     
     # 关系
     devices = relationship("Device", back_populates="device_type")
@@ -44,11 +46,13 @@ class Device(Base):
     device_name = Column(String(100), nullable=False)
     device_type_id = Column(Integer, ForeignKey('device_types.type_id'), nullable=False)
     user_id = Column(Integer, ForeignKey('users.user_id'), nullable=False)
-    room_location = Column(String(50))  # 房间位置
-    status = Column(Boolean, default=False)  # 设备状态：开/关
-    power_consumption = Column(Float, default=0.0)  # 功耗（瓦特）
+    room_location = Column(String(50))
+    status = Column(Boolean, default=False)
+    actual_power_consumption = Column(Float, default=0.0)
     installation_date = Column(DateTime, default=datetime.now)
     last_maintenance = Column(DateTime)
+    brand = Column(String(50))
+    model = Column(String(50))
     
     # 关系
     user = relationship("User", back_populates="devices")

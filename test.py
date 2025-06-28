@@ -325,12 +325,15 @@ class APITester:
         
         # 0. 首先执行删除测试 - 创建一个临时设备来测试删除
         temp_device_data = {
-            "device_name": f"临时删除测试设备_{int(time.time())}",
+            "device_name": "临时测试设备",
             "device_type_id": self.test_device_type_ids[0],
             "user_id": self.test_user_ids[0],
             "room_location": "临时房间",
-            "power_consumption": 10.0
+            "actual_power_consumption": 10.0
         }
+
+
+
         response = self.make_request("POST", "/devices/", temp_device_data)
         temp_device_id = None
         try:
@@ -361,14 +364,14 @@ class APITester:
                 "device_type_id": self.test_device_type_ids[0],
                 "user_id": self.test_user_ids[0],
                 "room_location": "客厅",
-                "power_consumption": 15.0
+                "actual_power_consumption": 15.0
             },
             {
                 "device_name": "测试卧室开关",
                 "device_type_id": self.test_device_type_ids[-1] if len(self.test_device_type_ids) > 1 else self.test_device_type_ids[0],
                 "user_id": self.test_user_ids[-1] if len(self.test_user_ids) > 1 else self.test_user_ids[0],
                 "room_location": "卧室",
-                "power_consumption": 5.0
+                "actual_power_consumption": 5.0
             }
         ]
         
@@ -420,7 +423,7 @@ class APITester:
         # 5. 更新设备
         if self.test_device_ids:
             device_id = self.test_device_ids[0]
-            update_data = {"status": True, "power_consumption": 20.0}
+            update_data = {"status": True, "actual_power_consumption": 20.0}
             response = self.make_request("PUT", f"/devices/{device_id}", update_data)
             try:
                 data = response.json()
